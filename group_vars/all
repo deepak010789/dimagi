@@ -25,6 +25,6 @@ supervisor_apps:
     command: "{{ project_path }}/{{ venv_name }}/bin/uwsgi --ini /home/{{ user_name }}/{{ project_dir }}/{{ app_name }}/uwsgi.ini"
 supervisor_envs:
   - key: TODO_SETTINGS
-    value: "{{ project_path }}/todo_local.cfg"
+    value: "{{ project_path }}/{{ app_name }}/todo_local.cfg"
   - key: FLASK_APP
     value: "todo.py"

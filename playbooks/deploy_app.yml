@@ -19,8 +19,15 @@
 
       - include: ../ansible/tasks/bash_rc.yml
 
-      - name: Create Logs file
-        file: path=/var/log/{{ app_name }}  state=directory mode=755 owner={{ user_name }} group={{ user_name }}
+      - name: Create log directories
+        file: path=/var/log/apps/{{ app_name }}/ state=directory mode=0755 owner={{ user_name }} group={{ user_name }}
+        become: yes
+
+      - name: copy uwsgi.ini to codebase
+        template: src=../templates/uwsgi.ini.j2 dest=/home/{{ user_name }}/{{ project_dir }}/uwsgi.ini owner={{ user_name }} group={{ user_name }}
+
+      - name: Generating upstart file
+        template: src=../templates/upstart_service.conf.j2 dest=/etc/init/{{ app_name }}.conf
         become: yes
 
       - name: Run nginx role
@@ -34,6 +41,10 @@
 
       - name: Ensure supervisor service is started
         service: name=supervisor state=restarted enabled=yes
+        become: yes
+
+      - name: restartng app
+        service: name={{ app_name }} state=restarted enabled=yes
         become: yes
 
       - include: ../ansible/tasks/postgres-client.yml
