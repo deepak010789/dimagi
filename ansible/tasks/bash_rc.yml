@@ -1,6 +1,6 @@
-- name: upadate bashrc with venv details
+- name: upadate bash_profile with venv details
   blockinfile:
-    dest: /home/{{ user_name }}/.bashrc
+    dest: /home/{{ user_name }}/.bash_profile
     block: |
      export {{ item.key }}='{{ item.value }}'
     marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.key }}"
@@ -12,9 +12,9 @@
   tags:
     - bashrc_envs
 
-- name: upadate bashrc with venv details
+- name: upadate bash_profile with venv details
   blockinfile:
-    dest: /home/{{ user_name }}/.bashrc
+    dest: /home/{{ user_name }}/.bash_profile
     marker: "# {mark} source Virtual ENV"
     block: |
      source {{ project_path }}/{{ venv_name }}/bin/activate
