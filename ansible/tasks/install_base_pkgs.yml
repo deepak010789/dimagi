@@ -1,0 +1,27 @@
+- name: Installing required server packages
+  apt: name={{item}} state=latest update_cache=yes
+  become: yes
+  with_items:
+      - python-minimal
+      - python-pip
+      - python-dev
+      - libffi-dev
+      - libev-dev
+      - libgeos-dev
+
+- name: Installing upstart based upon version no
+  apt: name=upstart-sysv state=latest update_cache=yes
+  become: yes
+  with_items:
+    - upstart-sysv
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == "16"
+
+- name: Installing virtualenv
+  pip: name={{item}} state=latest
+  become: yes
+  with_items:
+    - virtualenv
+    - boto
+    - awscli
+    - requests
+    - boto3

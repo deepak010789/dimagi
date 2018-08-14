@@ -1,0 +1,9 @@
+- name: Git pull code
+  git:
+    repo: "{{ repo_org }}/{{ repo_name }}.git"
+    dest: "/home/{{ user_name }}/{{ project_dir }}/{{ app_name }}"
+    accept_hostkey: yes
+    force: yes
+    version: "{{ tag_name }}"
+  become: yes
+  become_user: "{{ user_name }}"

@@ -1,0 +1,18 @@
+---
+
+- name: Install supervisor at system level
+  apt:
+    pkg: supervisor
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Create supervisord configuration file
+  template: src=supervisord.conf.j2 dest=/etc/supervisor/supervisord.conf
+  become: yes
+  tags:
+    - supervisor_conf
+
+- name: Logrotate config for supervisor
+  template: src=logrotate_supervisor.j2 dest=/etc/logrotate.d/supervisor
+  become: yes

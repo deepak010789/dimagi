@@ -1,0 +1,7 @@
+- name: Installing required python packages in virtualenv
+  pip:
+    requirements: "{{ project_path }}/{{ app_name }}/{{ requirements_file_path }}"
+    virtualenv: "{{ project_path }}/{{ venv_name }}"
+    virtualenv_site_packages: no
+  become: yes
+  become_user: "{{ user_name }}"

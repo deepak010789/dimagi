@@ -1,0 +1,13 @@
+[uwsgi]
+module = redash.wsgi:app
+
+master = true
+processes = 4
+
+virtualenv = {{ project_path }}/{{ app_name }}_{{ ENV }}
+pythonpath = {{ project_path }}/{{ app_name }}_{{ ENV }}/bin/python
+http = 0.0.0.0:5000
+logto = /var/log/apps/{{ app_name }}/output.log
+vacuum = true
+uid = {{ user_name }}
+die-on-term = true

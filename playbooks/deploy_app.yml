@@ -1,0 +1,41 @@
+---
+  - name: Playbook for installation, software, application
+    hosts: localhost
+    serial: 1
+
+    vars_files:
+      - ../group_vars/all
+
+    tasks:
+      - include: ../ansible/tasks/setup_user.yml
+
+      - include: ../ansible/tasks/clean_project_dir.yml
+
+      - include: ../ansible/tasks/install_base_pkgs.yml
+
+      - include: ../ansible/tasks/git_clone_repo.yml
+
+      - include: ../ansible/tasks/requirements.yml
+
+      - include: ../ansible/tasks/bash_rc.yml
+
+      - name: Create Logs file
+        file: path=/var/log/{{ app_name }}  state=directory mode=755 owner={{ user_name }} group={{ user_name }}
+        become: yes
+
+      - name: Run nginx role
+        include_role:
+          name: nginx
+        become: yes
+
+      - name: Run supervisor role
+        include_role:
+          name: supervisor
+
+      - name: Ensure supervisor service is started
+        service: name=supervisor state=restarted enabled=yes
+        become: yes
+
+      - include: ../ansible/tasks/postgres-client.yml
+        tags:
+          - user_data

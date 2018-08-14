@@ -1,0 +1,14 @@
+description "{{app_name}} service"
+author      "Infra"
+
+start on filesystem or runlevel [2345]
+stop on shutdown
+
+script
+
+    cd /home/{{ user_name }}/{{ project_dir }}/
+    export NEW_RELIC_CONFIG_FILE=/home/{{ user_name }}/{{ project_dir }}/{{ app_name }}/newrelic.ini
+    exec /home/{{ user_name }}/{{ project_dir }}/{{ venv_name }}/bin/python /home/{{ user_name }}/{{ project_dir }}/{{ venv_name }}/bin/newrelic-admin run-program /home/{{ user_name }}/{{ project_dir }}/{{ venv_name }}/bin/{{ run_command }}
+
+end script
+

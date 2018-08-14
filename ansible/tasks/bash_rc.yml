@@ -1,0 +1,26 @@
+- name: upadate bashrc with venv details
+  blockinfile:
+    dest: /home/{{ user_name }}/.bashrc
+    block: |
+     export {{ item.key }}='{{ item.value }}'
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.key }}"
+  become: true
+  become_user: "{{ user_name }}"
+  when: '"{{ bashrc }}" == "true"'
+  with_items:
+    - "{{ supervisor_envs }}"
+  tags:
+    - bashrc_envs
+
+- name: upadate bashrc with venv details
+  blockinfile:
+    dest: /home/{{ user_name }}/.bashrc
+    marker: "# {mark} source Virtual ENV"
+    block: |
+     source {{ project_path }}/{{ venv_name }}/bin/activate
+     cd {{ project_path }}
+  become: true
+  become_user: "{{ user_name }}"
+  when: '"{{ bashrc }}" == "true"'
+  tags:
+    - bashrc_envs

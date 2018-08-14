@@ -1,0 +1,2 @@
+supervisor_logrotate_rotate: 20
+supervisor_logrotate_size: 50M

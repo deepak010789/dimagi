@@ -1,0 +1,20 @@
+user_name: "devops"
+repo_org: "git@github.com:dimagi"
+repo_name: "todo"
+app_name: "todo"
+ENV: "prod"
+tag_name: "master"
+venv_name: "{{ app_name }}_{{ ENV }}"
+requirements_file_path: "requirements.txt"
+project_dir: "dimagi"
+project_path: "/home/{{ user_name }}/{{ project_dir }}"
+bashrc: "true"
+backend_port: 5000
+supervisor_apps:
+  - name: app
+    command: "{{ project_path }}/{{ venv_name }}/bin/uwsgi --ini /home/{{ user_name }}/{{ project_dir }}/{{ app_name }}/uwsgi.ini"
+supervisor_envs:
+  - key: TODO_SETTINGS
+    value: "{{ project_path }}/todo_local.cfg"
+  - key: FLASK_APP
+    value: "todo.py"

@@ -1,0 +1,12 @@
+/var/log/supervisor/*.log {
+        hourly
+        copytruncate
+        su root root
+        rotate {{ supervisor_logrotate_rotate }}
+        size {{ supervisor_logrotate_size }}
+        delaycompress
+        compress
+        missingok
+        notifempty
+        create 0664 root ubuntu
+}

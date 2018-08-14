@@ -1,0 +1,47 @@
+[unix_http_server]
+file=/var/run/supervisor.sock   ; (the path to the socket file)
+chmod=0700                       ; sockef file mode (default 0700)
+
+[supervisord]
+childlogdir=/var/log/supervisor
+logfile=/var/log/supervisor/supervisord.log
+pidfile=/var/run/supervisord.pid
+logfile_maxbytes = 50MB
+logfile_backups = 20
+nodaemon = false
+minfds = 1024
+minprocs = 200
+umask = 022
+identifier = supervisor
+nocleanup = true
+strip_ansi = false
+
+{% if supervisor_envs %}
+environment=
+{% for env in supervisor_envs %}
+	{{env.key}}='{{env.value}}',
+{% endfor %}
+{% endif %}
+
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+[supervisorctl]
+serverurl=unix:///var/run/supervisor.sock ; use a unix:// URL  for a unix socket
+
+[include]
+files = /etc/supervisor/conf.d/*.conf
+
+{% if supervisor_apps %}
+[program:{{ app.name }}]
+directory = {{ project_path }}/{{ app_name }}
+command = {{app.command}}
+autostart = true
+autorestart = {{ autorestart }}
+stdout_logfile = /var/log/supervisor/{{app.name}}-stdout.log
+stderr_logfile = /var/log/supervisor/{{app.name}}-stderr.log
+stdout_logfile_maxbytes = {{stdout_logfile_maxbytes}}
+stderr_logfile_maxbytes = {{ stderr_logfile_maxbytes }}
+stderr_logfile_backups = {{ stderr_logfile_backups }}
+stdout_logfile_backups = {{ stdout_logfile_backups }}
+{% endif %}
