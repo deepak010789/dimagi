@@ -26,9 +26,9 @@
       - name: copy uwsgi.ini to codebase
         template: src=../templates/uwsgi.ini.j2 dest=/home/{{ user_name }}/{{ project_dir }}/uwsgi.ini owner={{ user_name }} group={{ user_name }}
 
-      - name: Generating upstart file
-        template: src=../templates/upstart_service.conf.j2 dest=/etc/init/{{ app_name }}.conf
-        become: yes
+#      - name: Generating upstart file
+#        template: src=../templates/upstart_service.conf.j2 dest=/etc/init/{{ app_name }}.conf
+#        become: yes
 
       - name: Run nginx role
         include_role:

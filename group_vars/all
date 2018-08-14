@@ -22,7 +22,7 @@ stopwaitsecs: 300
 
 supervisor_apps:
   - name: app
-    command: "{{ project_path }}/{{ venv_name }}/bin/uwsgi --ini /home/{{ user_name }}/{{ project_dir }}/{{ app_name }}/uwsgi.ini"
+    command: "{{ project_path }}/{{ venv_name }}/bin/uwsgi --ini /home/{{ user_name }}/{{ project_dir }}/uwsgi.ini"
 supervisor_envs:
   - key: TODO_SETTINGS
     value: "{{ project_path }}/{{ app_name }}/todo_local.cfg"
