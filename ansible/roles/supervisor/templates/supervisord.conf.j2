@@ -33,10 +33,11 @@ serverurl=unix:///var/run/supervisor.sock ; use a unix:// URL  for a unix socket
 files = /etc/supervisor/conf.d/*.conf
 
 {% if supervisor_apps %}
+{% for app in supervisor_apps %}
 [program:{{ app.name }}]
 directory = {{ project_path }}/{{ app_name }}
 command = {{app.command}}
-autostart = true
+autostart = {{ autostart }}
 autorestart = {{ autorestart }}
 stdout_logfile = /var/log/supervisor/{{app.name}}-stdout.log
 stderr_logfile = /var/log/supervisor/{{app.name}}-stderr.log
@@ -44,4 +45,5 @@ stdout_logfile_maxbytes = {{stdout_logfile_maxbytes}}
 stderr_logfile_maxbytes = {{ stderr_logfile_maxbytes }}
 stderr_logfile_backups = {{ stderr_logfile_backups }}
 stdout_logfile_backups = {{ stdout_logfile_backups }}
+{% endfor %}
 {% endif %}

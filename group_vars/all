@@ -10,6 +10,16 @@ project_dir: "dimagi"
 project_path: "/home/{{ user_name }}/{{ project_dir }}"
 bashrc: "true"
 backend_port: 5000
+
+autostart: false
+autorestart: true
+stdout_logfile_maxbytes: 50MB
+stderr_logfile_maxbytes: 50MB
+stderr_logfile_backups: 20
+stdout_logfile_backups: 20
+stopsignal: INT
+stopwaitsecs: 300
+
 supervisor_apps:
   - name: app
     command: "{{ project_path }}/{{ venv_name }}/bin/uwsgi --ini /home/{{ user_name }}/{{ project_dir }}/{{ app_name }}/uwsgi.ini"
