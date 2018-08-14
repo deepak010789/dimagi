@@ -26,10 +26,6 @@
       - name: copy uwsgi.ini to codebase
         template: src=../templates/uwsgi.ini.j2 dest=/home/{{ user_name }}/{{ project_dir }}/uwsgi.ini owner={{ user_name }} group={{ user_name }}
 
-#      - name: Generating upstart file
-#        template: src=../templates/upstart_service.conf.j2 dest=/etc/init/{{ app_name }}.conf
-#        become: yes
-
       - name: Run nginx role
         include_role:
           name: nginx
@@ -39,8 +35,10 @@
         include_role:
           name: supervisor
 
-#      - name: Run DB migrations
-#        shell: "flask db upgrade"
+      - name: Run DB migrations
+        shell: "{{ project_path }}/{{ venv_name }}/bin/flask db upgrade"
+        tags:
+          - migrations
 
       - name: Ensure supervisor service is started
         service: name=supervisor state=restarted enabled=yes
