@@ -5,3 +5,11 @@
     virtualenv_site_packages: no
   become: yes
   become_user: "{{ user_name }}"
+
+- name: Installing required python packages in virtualenv
+  pip:
+    name: uwsgi
+    virtualenv: "{{ project_path }}/{{ venv_name }}"
+    virtualenv_site_packages: no
+  become: yes
+  become_user: "{{ user_name }}"

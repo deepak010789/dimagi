@@ -39,6 +39,9 @@
         include_role:
           name: supervisor
 
+      - name: Run DB migrations
+        shell: "flask db upgrade"
+
       - name: Ensure supervisor service is started
         service: name=supervisor state=restarted enabled=yes
         become: yes
