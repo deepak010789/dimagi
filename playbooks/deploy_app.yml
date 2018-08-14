@@ -43,9 +43,8 @@
         service: name=supervisor state=restarted enabled=yes
         become: yes
 
-      - name: restartng app
-        service: name={{ app_name }} state=restarted enabled=yes
-        become: yes
+      - name: Start application server (uwsgi)
+        include: ../ansible/tasks/app_server.yml
 
       - include: ../ansible/tasks/postgres-client.yml
         tags:
